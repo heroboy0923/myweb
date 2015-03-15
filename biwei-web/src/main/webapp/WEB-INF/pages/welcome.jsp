@@ -1,12 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<html>
-    <head>
-        <title>MyWeb | Welcome</title>
-    </head>
-    <body>
-        hello,world
-    </body>
-    <footer>
-    </footer>
-</html>
+<title>首页</title>
+
+<div>
+    Hello, World! Come on, baby!
+</div>
 
