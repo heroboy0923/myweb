@@ -6,33 +6,33 @@
 
         window.onload = function(){
             JSUnit.addProject('计算器测试', function(addGroup) {
-                addGroup('乘法测试', function(addCase){
-                    addCase(function(assert) {
-                        assert.assertEqual('4乘1.1等于4', Calculator.multiply(4, 1.1), 4);
-                    });
-                    addCase(function(assert) {
-                        assert.assertEqual('4乘1.2等于5', Calculator.multiply(4, 1.2), 5);
-
-                    });
+                addGroup('乘法测试', function(addCase, assert){
+                    addCase('4乘1.1等于4', assert.expect(function() {
+                        return Calculator.multiply(4, 1.1);
+                    }).equals(4));
+                    addCase('4乘1.2等于5', assert.expect(function() {
+                        return Calculator.multiply(4, 1.2);
+                    }).equals(5));
                 });
 
-                addGroup('除法测试', function(addCase){
-                    addCase(function(assert) {
-                        assert.assertEqual('4除以0异常', function(){
-                            Calculator.divide(4, 0);
-                        });
-                    });
-                    addCase(function(assert) {
-                        assert.assertEqual('4除以1异常', function(){
-                            Calculator.divide(4, 1);
-                        });
-
-                    });
+                addGroup('除法测试', function(addCase, assert){
+                    addCase('4除以0异常', assert.expectException(function() {
+                        return Calculator.divide(4, 0);
+                    }));
                 });
             });
         }
 
     </script>
 </head>
-<body></body>
+<body>
+    <div id="test-result">
+        <h3>
+            <span id="project"></span>，总用例数：
+            <span id="case-count">0</span>，通过：
+            <span id="pass-count">0</span>，失败：
+            <span id="fail-count">0</span>
+        </h3>
+    </div>
+</body>
 </html>

@@ -1,69 +1,95 @@
 var Assert = (function() {
-    var _FAIL_TEXT_ = '......fail';
-    var _PASS_TEXT_ = '......pass';
 
-    function assertException(title, callback) {
-        try {
-            callback();
-            return title + _FAIL_TEXT_;
-        } catch(e) {
-            return title + _PASS_TEXT_;
+    function expect(callback) {
+        return {
+            equals : function(result) {
+                return callback() === result;
+            }
         }
     }
 
-    function assertEqual(title, result, expect) {
-        assertTrue(title, result === expect);
-    }
-
-    function assertTrue(title, result) {
-        if(result === true) {
-            return title + _PASS_TEXT_;
-        } else {
-            return title + _FAIL_TEXT_;
+    function expectException(callback) {
+        try {
+            callback();
+            return false;
+        } catch(e) {
+            return true;
         }
     }
 
     return {
-        assertTrue : assertTrue,
-        assertEqual : assertEqual,
-        assertException : assertException
+        expect : expect,
+        expectException : expectException
     };
 }());
 
-var TestCase = (function(assert) {
+var JSUnit = (function(assert){
 
-    function addCase(callback) {
-        callback(assert);
-    }
+    var TestCase = (function() {
 
-    return {
-        addCase : addCase
-    };
+        function addCount(elementId) {
+            var $count = document.getElementById(elementId);
+            var count = parseInt($count.innerText) + 1;
+            $count.innerText = count;
+        }
 
-}(Assert));
+        function addTotalCount() {
+            addCount('case-count');
+        }
 
-var TestGroup = (function(testCase) {
+        function addFailCount() {
+            addCount('fail-count');
+        }
 
-    function addGroup(groupName, callback) {
-        // var $groupName = document.getElementById('group-name');
-        // $groupName.innerHTML = groupName;
-        callback(testCase.addCase);
-    }
+        function addPassCount() {
+            addCount('pass-count');
+        }
 
-    return {
-        addGroup : addGroup
-    };
-}(TestCase));
+        function addCase(title, result) {
+            var li = document.createElement("li");
+            var ul = document.getElementById('test-result').lastElementChild.lastElementChild;
+            addTotalCount();
+            if(result === true) {
+                addPassCount();
+                var result = title + '......pass';
+                console.log(result);
+                li.innerText = result;
+                ul.appendChild(li);
+            } else {
+                addFailCount();
+                var result = title + '......fail';
+                console.log(result);
+                li.innerText = result;
+                ul.appendChild(li);
+            }
+        }
 
-var JSUnit = (function(testGroup){
+        return {
+            addCase : addCase
+        };
+
+    }());
+
+    var TestGroup = (function(testCase) {
+
+        function addGroup(groupName, callback) {
+            var $div = document.getElementById('test-result');
+            var html = $div.innerHTML;
+            $div.innerHTML = html + '<div><div>' + groupName + '</div><ul></ul></div>';
+            callback(testCase.addCase, assert);
+        }
+
+        return {
+            addGroup : addGroup
+        };
+    }(TestCase));
 
     function addProject(projectName, callback) {
-        // var $projectName = document.getElementById('project-name');
-        // $projectName.innerHTML = projectName;
-        callback(testGroup.addGroup);
+        document.getElementById('project').innerHTML = projectName;
+        callback(TestGroup.addGroup);
     }
 
     return {
         addProject : addProject
     };
-}(TestGroup));
+}(Assert));
