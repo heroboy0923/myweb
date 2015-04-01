@@ -1,0 +1,38 @@
+<html>
+<head>
+    <script type="text/javascript" src="calculator.js"></script>
+    <script type="text/javascript" src="jsUnit.js"></script>
+    <script type="text/javascript">
+
+        window.onload = function(){
+            JSUnit.addProject('计算器测试', function(addGroup) {
+                addGroup('乘法测试', function(addCase){
+                    addCase(function(assert) {
+                        assert.assertEqual('4乘1.1等于4', Calculator.multiply(4, 1.1), 4);
+                    });
+                    addCase(function(assert) {
+                        assert.assertEqual('4乘1.2等于5', Calculator.multiply(4, 1.2), 5);
+
+                    });
+                });
+
+                addGroup('除法测试', function(addCase){
+                    addCase(function(assert) {
+                        assert.assertEqual('4除以0异常', function(){
+                            Calculator.divide(4, 0);
+                        });
+                    });
+                    addCase(function(assert) {
+                        assert.assertEqual('4除以1异常', function(){
+                            Calculator.divide(4, 1);
+                        });
+
+                    });
+                });
+            });
+        }
+
+    </script>
+</head>
+<body></body>
+</html>
