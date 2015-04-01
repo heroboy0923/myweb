@@ -1,16 +1,27 @@
 var Calculator = (function() {
-    return {
-        add : function(a, b) {
-            return a + b;
-        },
-        divide : function(a, b) {
-            if(b === 0) {
-                throw new Error('can not be 0');
-            }
-            return a / b;
-        },
-        multiply: function(a, b) {
-            return Math.round(a * b);
+
+    function multiply(a, b) {
+        return Math.round(a * b);
+    }
+
+    function divide(a, b) {
+        if(b === 0) {
+            throw new Error('0 cannot be divided');
         }
+        return a / b;
+    }
+
+    function add(a, b) {
+        return a + b;
+    }
+
+    function subtract(a, b) {
+        return a - b;
+    }
+    return {
+        add : add,
+        divide : divide,
+        multiply: multiply,
+        subtract: subtract
     };
 }());

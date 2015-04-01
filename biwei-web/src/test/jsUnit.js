@@ -1,3 +1,7 @@
+/**
+ * 用于单元测试的Assert模块
+ * @type {{expect, expectException}}
+ */
 var Assert = (function() {
 
     function expect(callback) {
@@ -25,6 +29,10 @@ var Assert = (function() {
 
 var JSUnit = (function(assert){
 
+    /**
+     * 用于增加测试用例
+     * @type {{addCase}}
+     */
     var TestCase = (function() {
 
         function addCount(elementId) {
@@ -49,19 +57,19 @@ var JSUnit = (function(assert){
             var li = document.createElement("li");
             var ul = document.getElementById('test-result').lastElementChild.lastElementChild;
             addTotalCount();
+            var testResult;
             if(result === true) {
                 addPassCount();
-                var result = title + '......pass';
-                console.log(result);
-                li.innerText = result;
-                ul.appendChild(li);
+                testResult = title + '......pass';
+
             } else {
                 addFailCount();
-                var result = title + '......fail';
-                console.log(result);
-                li.innerText = result;
-                ul.appendChild(li);
+                li.style.color = 'red';
+                testResult = title + '......fail';
             }
+            console.log(testResult);
+            li.innerText = testResult;
+            ul.appendChild(li);
         }
 
         return {
@@ -70,6 +78,10 @@ var JSUnit = (function(assert){
 
     }());
 
+    /**
+     * 用于增加测试组
+     * @type {{addGroup}}
+     */
     var TestGroup = (function(testCase) {
 
         function addGroup(groupName, callback) {
@@ -84,9 +96,16 @@ var JSUnit = (function(assert){
         };
     }(TestCase));
 
+    /**
+     * 生成测试项目的结果
+     * @param projectName
+     * @param callback
+     */
     function addProject(projectName, callback) {
-        document.getElementById('project').innerHTML = projectName;
-        callback(TestGroup.addGroup);
+        window.onload = function(){
+            document.getElementById('project').innerHTML = projectName;
+            callback(TestGroup.addGroup);
+        };
     }
 
     return {
