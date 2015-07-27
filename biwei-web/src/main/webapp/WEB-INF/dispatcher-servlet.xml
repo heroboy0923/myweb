@@ -16,6 +16,9 @@
     <mvc:view-controller path="/welcome" view-name="welcome"/>
     <mvc:view-controller path="/" view-name="welcome"/>
 
+    <mvc:resources mapping="/assets/**" location="/assets/" />
+    <mvc:resources mapping="/scripts/**" location="/scripts/" />
+
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/pages/"></property>
